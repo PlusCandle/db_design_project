@@ -1,6 +1,6 @@
 const express = require('express');
 const dbConnPool = require('./dbms'); // modules.export로 가져옴
-const {queries} = require('./table'); // exports로 가져옴
+const {queries} = require('./createTable'); // exports로 가져옴
 const app = express();
 const cors = require('cors');
 
@@ -38,13 +38,15 @@ app.delete('', () => {
 app.listen(8080, async () => {
     try {
         const conn = await dbConnPool.getConnection();
-        
         let sql;
         for (const key in queries) {
             if (queries.hasOwnProperty(key)) {
                 sql = queries[key]
-                const [rows] = await dbConnPool.query(sql);
-                console.log(rows);
+                try {
+                    const [rows] = await dbConnPool.query(sql);
+                } catch(err){
+                    console.log(key, ': ', err)
+                }
             }
         }
         conn.release();

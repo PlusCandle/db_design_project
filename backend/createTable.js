@@ -14,6 +14,7 @@ exports.queries = {
     createUser : `
         CREATE TABLE user_info (
             user_id	int	NOT NULL AUTO_INCREMENT,
+            user_name varchar(20) NULL,
             health	SMALLINT	NOT NULL	DEFAULT 100,
             offense	INT	NOT NULL	DEFAULT 0,
             account	FLOAT	NOT NULL	DEFAULT 10	,
@@ -39,9 +40,9 @@ exports.queries = {
         factory_name	varchar(20)	NULL,
         location	varchar(20)	NULL,
         ceo	varchar(20)	NULL,
-        category	varchar(20)	NOT NULL,
+        function_category	varchar(20)	NOT NULL,
         product_name	varchar(20)	NOT NULL,
-        production	int	NOT NULL,
+        production_cycle_time	int	NOT NULL,
         PRIMARY KEY (factory_id)
     );`,
     createOrder : `
