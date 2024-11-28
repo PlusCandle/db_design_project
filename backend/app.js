@@ -1,5 +1,6 @@
 const express = require('express');
-const dbConnPool = require('./dbms');
+const dbConnPool = require('./dbms'); // modules.export로 가져옴
+const {queries} = require('./table'); // exports로 가져옴
 const app = express();
 const cors = require('cors');
 
@@ -11,14 +12,15 @@ app.get('', () => {
 
 });
 
-app.post('', async (req, res) => {
+app.post('/create', async (req, res) => {
     try {
         let {  } = req.body;
         console.log()
 
         const conn = await dbConnPool.getConnection();
 
-        let sql = "";
+        let sql = "INSERT INTO player";
+        //userName
         
     } catch (e) {
         console.log(e);
@@ -33,6 +35,20 @@ app.delete('', () => {
 
 });
 
-app.listen(8080, () => {
-
+app.listen(8080, async () => {
+    try {
+        const conn = await dbConnPool.getConnection();
+        
+        let sql;
+        for (const key in queries) {
+            if (queries.hasOwnProperty(key)) {
+                sql = queries[key]
+                const [rows] = await dbConnPool.query(sql);
+                console.log(rows);
+            }
+        }
+        conn.release();
+    } catch(err){
+        console.log(err);
+    }
 });

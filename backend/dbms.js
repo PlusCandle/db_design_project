@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 dotenv.config();
-const { HOST, USER, PASSWORD, DATABASE} = process.dotenv;
+const { HOST, USER, PASSWORD, DATABASE} = process.env;
 
 const dbmsConfig = {
     connectionLimit : 5,
