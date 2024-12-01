@@ -1,6 +1,6 @@
 const express = require('express');
 const dbConnPool = require('./dbms'); // modules.export로 가져옴
-const {tableQueries} = require('./init_sql/create_table'); // exports로 가져옴
+const {initQueries} = require('./init_sql/create_table'); // exports로 가져옴
 const {dataQueries} = require('./init_sql/create_data');
 const app = express();
 const cors = require('cors');
@@ -9,9 +9,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false})) // req.body 가져오는 용도
 
-app.get('/api/read/', async (req, res) => {
+app.get('/api/read/user', async (req, res) => {
     try {
-
+        const conn = await dbConnPool.getConnection();
+        let sql = 'SELECT user_id FROM user_info';
+        const [rows] = await dbConnPool.query(sql);
+        res.status(200).json({result : rows});
+        conn.release();
     } catch (err) {
         console.log(err);
     }
@@ -48,14 +52,15 @@ app.listen(8080, async () => {
     try {
         const conn = await dbConnPool.getConnection();
         let sql;
-        for (const key in tableQueries) {
-            if (tableQueries.hasOwnProperty(key)) {
-                sql = tableQueries[key]
+        for (const key in initQueries) {
+            if (initQueries.hasOwnProperty(key)) {
+                sql = initQueries[key]
                 try {
                     const [rows] = await dbConnPool.query(sql);
-                    console.log('success to create : ', key);
+                    console.log('success to : ', key);
                 } catch(err){
-                    console.log('Fail to create : ', key);
+                    console.log('Fail to : ', key);
+                    console.log(err);
                 }
             }
         }
