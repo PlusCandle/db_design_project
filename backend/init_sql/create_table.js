@@ -24,6 +24,8 @@ exports.tableQueries = {
             product_id	INT	NOT NULL AUTO_INCREMENT,
             product_name	VARCHAR(20)	,
             img_src	VARCHAR(20)	NULL,
+            function_category	VARCHAR(20)	NOT NULL CHECK (function_category IN ('offense', 'health')),
+            effect	INT	NOT NULL,
             coin	INT	NOT NULL,
             inventory	INT	NULL CHECK (inventory >= 0),
             PRIMARY KEY (product_id)
@@ -36,7 +38,7 @@ exports.tableQueries = {
         ceo	VARCHAR(20)	NULL,
         function_category	VARCHAR(20)	NOT NULL CHECK (function_category IN ('offense', 'health')),
         effect	INT	NOT NULL,
-        product_name	VARCHAR(20)	NOT NULL,
+        product_name	VARCHAR(20)	NOT NULL UNIQUE,
         production_cycle_time	INT	NOT NULL,
         PRIMARY KEY (factory_id)
     );`,

@@ -1,6 +1,7 @@
 const express = require('express');
 const dbConnPool = require('./dbms'); // modules.export로 가져옴
 const {tableQueries} = require('./init_sql/create_table'); // exports로 가져옴
+const {dataQueries} = require('./init_sql/create_data');
 const app = express();
 const cors = require('cors');
 
@@ -8,30 +9,38 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:false})) // req.body 가져오는 용도
 
-app.get('', () => {
+app.get('/api/read/', async (req, res) => {
+    try {
 
+    } catch (err) {
+        console.log(err);
+    }
 });
 
-app.post('/create', async (req, res) => {
+app.post('/api/create/user', async (req, res) => {
     try {
-        let {  } = req.body;
-        console.log()
+        let { name } = req.body;
+        console.log("user name is ", name);
+        const key = 'insertUser';
 
         const conn = await dbConnPool.getConnection();
-
-        let sql = "INSERT INTO player";
-        //userName
-        
+        if (dataQueries.hasOwnProperty(key)){
+            let sql = dataQueries[key];
+            let data = [name];
+            const [rows] = await dbConnPool.query(sql, data);
+            res.status(200).json({result : rows});
+        }
+        conn.release();
     } catch (e) {
         console.log(e);
     }
 });
 
-app.put('', () => {
+app.put('/api/update', () => {
 
 });
 
-app.delete('', () => {
+app.delete('/api/delete', () => {
 
 });
 

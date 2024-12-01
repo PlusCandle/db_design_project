@@ -1,14 +1,13 @@
-exports.dataQuries = {
-    
-    insertUser : `INSERT INTO user_info (user_name) values (?);`,
-    insertProduct : `INSERT INTO product (product_name, img_src, coin, inventory, type, effect)
-    values(?, ?, ?, ?, ?, ?);`,
+exports.dataQueries = {
+
+    insertUser : `INSERT INTO user_info (user_name) values (?)`,
+    insertProduct : `INSERT INTO product (product_name, img_src, coin, inventory, type, effect) values(?, ?, ?, ?, ?, ?);`,
     // e.g. "potion_factory", "heal_HP", "potion", "5"
     // e.g. "weapon_factory", "offense", "drone", "10"
     // e.g. "weapon_factory", "offense", "tank", "20"  
     insertFactory : `INSERT INTO factory
-    (factory_name, function_category, prodcut_name, production_cycle_time);`,
-
+    (factory_name, function_category, prodcut_name, production_cycle_time)`
+/*
     createOrder : `
         CREATE TABLE order_detail (
             order_id	int	NOT NULL AUTO_INCREMENT,
@@ -33,5 +32,5 @@ exports.dataQuries = {
             PRIMARY KEY (supply_id),
             CONSTRAINT supply_f FOREIGN KEY (factory_id) references factory(factory_id),
             CONSTRAINT supply_p FOREIGN KEY (product_id) references product(product_id)
-    );`
+    );`*/
 };
